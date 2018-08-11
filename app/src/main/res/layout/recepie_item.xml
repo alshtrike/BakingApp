@@ -3,16 +3,20 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv_recepie_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/recepie_item_height">
+        android:layout_height="@dimen/recepie_item_height"
+        android:layout_marginStart="@dimen/cv_margin"
+        android:layout_marginEnd="@dimen/cv_margin"
+        android:layout_marginBottom="@dimen/cv_margin">
 
         <TextView
-            android:id="@+id/info_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:id="@+id/tv_recepie_card_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
     </android.support.v7.widget.CardView>
 </LinearLayout>

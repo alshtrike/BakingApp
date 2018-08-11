@@ -1,7 +1,6 @@
 package com.projects.android.bakingapp.utils;
 
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +10,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 import timber.log.Timber;
-
-/**
- * Created by alshtray on 8/11/18.
- */
 
 public class JSONGetter {
     public String getJson(String url) {

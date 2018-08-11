@@ -2,10 +2,6 @@ package com.projects.android.bakingapp.data;
 
 import java.util.List;
 
-/**
- * Created by alshtray on 8/11/18.
- */
-
 public class Recepie {
     private String name;
     private List<Ingredient> ingredients;

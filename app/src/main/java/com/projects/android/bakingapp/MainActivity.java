@@ -7,9 +7,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.projects.android.bakingapp.adapters.RecepieAdapter;
 import com.projects.android.bakingapp.data.Recepie;
 import com.projects.android.bakingapp.loaders.LoadingStrategy;
 import com.projects.android.bakingapp.loaders.RecepieAsyncLoader;
@@ -20,10 +24,11 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Recepie[]>{
+public class MainActivity extends AppCompatActivity implements RecepieAdapter.RecepieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Recepie[]>{
 
     private final int RECEPIE_LOADER_ID = 1;
     private ProgressBar mLoadingIndicator;
+    private RecepieAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,12 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
         setContentView(R.layout.activity_main);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         Timber.plant(new Timber.DebugTree());
+
+        mAdapter = new RecepieAdapter(this);
+        RecyclerView rv = findViewById(R.id.rv_recepies);
+        rv.setAdapter(mAdapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
         Loader<Recepie[]> loader = getSupportLoaderManager().getLoader(RECEPIE_LOADER_ID);
         if(loader == null){
             getSupportLoaderManager().initLoader(RECEPIE_LOADER_ID, savedInstanceState, MainActivity.this);
@@ -51,10 +62,22 @@ public class MainActivity extends AppCompatActivity  implements LoaderManager.Lo
     @Override
     public void onLoadFinished(@NonNull Loader<Recepie[]> loader, Recepie[] recepies) {
         mLoadingIndicator.setVisibility(View.INVISIBLE);
+        mAdapter.setRecepies(recepies);
+
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Recepie[]> loader) {
 
+    }
+
+    @Override
+    public void onClick(Recepie movie) {
+        showToast("Clicked on "+movie.getName());
+    }
+
+    private void showToast(String toastText){
+        Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
+        toast.show();
     }
 }

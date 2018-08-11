@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/cv_recepies"
+        android:id="@+id/rv_recepies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/cv_margin"/>
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
@@ -15,4 +15,4 @@
         android:layout_width="@dimen/loading_indicator_size"
         android:layout_gravity="center"
         android:visibility="invisible" />
-</LinearLayout>
+</merge>
