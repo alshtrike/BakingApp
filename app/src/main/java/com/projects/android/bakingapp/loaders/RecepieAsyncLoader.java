@@ -9,8 +9,6 @@ import android.widget.ProgressBar;
 
 import com.projects.android.bakingapp.data.Recepie;
 
-import java.util.List;
-
 public class RecepieAsyncLoader extends AsyncTaskLoader<Recepie[]> {
 
     private final Bundle mArgs;

@@ -1,5 +1,6 @@
 package com.projects.android.bakingapp;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
     private final int RECEPIE_LOADER_ID = 1;
     private ProgressBar mLoadingIndicator;
     private RecepieAdapter mAdapter;
+    private RecyclerView mRecepieRV;
+    private Parcelable mRvState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,16 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
         Timber.plant(new Timber.DebugTree());
 
         mAdapter = new RecepieAdapter(this);
-        RecyclerView rv = findViewById(R.id.rv_recepies);
-        rv.setAdapter(mAdapter);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        mRecepieRV = findViewById(R.id.rv_recepies);
+        mRecepieRV.setAdapter(mAdapter);
+        mRecepieRV.setLayoutManager(new LinearLayoutManager(this));
+
+        if(savedInstanceState !=null){
+            if(savedInstanceState.containsKey(getString(R.string.rv_recepie_layout_state))){
+                mRvState = savedInstanceState.getParcelable(getString(R.string.rv_recepie_layout_state));
+                mRecepieRV.getLayoutManager().onRestoreInstanceState(mRvState);
+            }
+        }
 
         Loader<Recepie[]> loader = getSupportLoaderManager().getLoader(RECEPIE_LOADER_ID);
         if(loader == null){
@@ -63,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
     public void onLoadFinished(@NonNull Loader<Recepie[]> loader, Recepie[] recepies) {
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         mAdapter.setRecepies(recepies);
+        if(mRecepieRV!=null){
+            mRecepieRV.getLayoutManager().onRestoreInstanceState(mRvState);
+        }
 
     }
 
@@ -74,6 +87,13 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
     @Override
     public void onClick(Recepie movie) {
         showToast("Clicked on "+movie.getName());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Parcelable layoutState = mRecepieRV.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(getString(R.string.rv_recepie_layout_state), layoutState);
     }
 
     private void showToast(String toastText){

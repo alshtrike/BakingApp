@@ -7,7 +7,7 @@
         android:id="@+id/rv_recepies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/cv_margin"/>
+        android:layout_marginTop="@dimen/rv_top_margin"/>
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
