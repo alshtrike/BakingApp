@@ -8,8 +8,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -41,9 +43,11 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
         Timber.plant(new Timber.DebugTree());
 
         mAdapter = new RecepieAdapter(this);
+        int numOfColumns = calculateNoOfColumns();
+        GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
         mRecepieRV = findViewById(R.id.rv_recepies);
         mRecepieRV.setAdapter(mAdapter);
-        mRecepieRV.setLayoutManager(new LinearLayoutManager(this));
+        mRecepieRV.setLayoutManager(layoutManager);
 
         if(savedInstanceState !=null){
             if(savedInstanceState.containsKey(getString(R.string.rv_recepie_layout_state))){
@@ -99,5 +103,23 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
     private void showToast(String toastText){
         Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    private int calculateNoOfColumns() {
+        //check if tablet (smallest width > 600dp)
+        //2 columns for tablet 1 otherwise
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        int widthPixels = metrics.widthPixels;
+        int heightPixels = metrics.heightPixels;
+        float scaleFactor = metrics.density;
+
+        float widthDp = widthPixels / scaleFactor;
+        float heightDp = heightPixels / scaleFactor;
+
+        float smallestWidth = Math.min(widthDp, heightDp);
+
+        return smallestWidth > 600 ? 2 : 1;
     }
 }
