@@ -1,11 +1,39 @@
 package com.projects.android.bakingapp.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Recepie {
+public class Recepie implements Parcelable{
     private String name;
     private List<Ingredient> ingredients;
     private List<Step> steps;
+
+    public Recepie(){
+
+    }
+
+    public Recepie(Parcel in) {
+        name = in.readString();
+        ingredients = new ArrayList<Ingredient>();
+        in.readList(ingredients, null);
+        steps = new ArrayList<Step>();
+        in.readList(steps, null);
+    }
+
+    public static final Creator<Recepie> CREATOR = new Creator<Recepie>() {
+        @Override
+        public Recepie createFromParcel(Parcel in) {
+            return new Recepie(in);
+        }
+
+        @Override
+        public Recepie[] newArray(int size) {
+            return new Recepie[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -29,5 +57,15 @@ public class Recepie {
 
     public void setSteps(List<Step> steps) {
         this.steps = steps;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
     }
 }

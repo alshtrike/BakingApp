@@ -6,4 +6,5 @@
     <dimen name="cv_vert_margin">15dp</dimen>
     <dimen name="rv_top_margin">10dp</dimen>
     <dimen name="recepie_item_width">400dp</dimen>
+    <dimen name="right_panel_width">350dp</dimen>
 </resources>

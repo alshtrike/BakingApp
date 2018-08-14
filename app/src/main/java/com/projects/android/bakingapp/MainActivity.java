@@ -1,5 +1,8 @@
 package com.projects.android.bakingapp;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +24,7 @@ import com.projects.android.bakingapp.data.Recepie;
 import com.projects.android.bakingapp.loaders.LoadingStrategy;
 import com.projects.android.bakingapp.loaders.RecepieAsyncLoader;
 import com.projects.android.bakingapp.loaders.UrlLoadingStrategy;
+import com.projects.android.bakingapp.utils.HelperFunctions;
 import com.projects.android.bakingapp.utils.JSONGetter;
 
 import java.util.List;
@@ -89,8 +93,14 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
     }
 
     @Override
-    public void onClick(Recepie movie) {
-        showToast("Clicked on "+movie.getName());
+    public void onClick(Recepie recepie) {
+        HelperFunctions.showToast("Clicked on "+recepie.getName(),this);
+        Intent startMovieDetail = new Intent(this, RecepieStepsActivity.class);
+
+        Bundle recepieBundle = new Bundle();
+        recepieBundle.putParcelable(getString(R.string.recepie_parcel),recepie);
+        startMovieDetail.putExtras(recepieBundle);
+        startActivity(startMovieDetail);
     }
 
     @Override
@@ -98,11 +108,6 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
         super.onSaveInstanceState(outState);
         Parcelable layoutState = mRecepieRV.getLayoutManager().onSaveInstanceState();
         outState.putParcelable(getString(R.string.rv_recepie_layout_state), layoutState);
-    }
-
-    private void showToast(String toastText){
-        Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
-        toast.show();
     }
 
     private int calculateNoOfColumns() {
