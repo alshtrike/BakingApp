@@ -19,10 +19,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.projects.android.bakingapp.adapters.RecepieAdapter;
-import com.projects.android.bakingapp.data.Recepie;
+import com.projects.android.bakingapp.adapters.RecipeAdapter;
+import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.loaders.LoadingStrategy;
-import com.projects.android.bakingapp.loaders.RecepieAsyncLoader;
+import com.projects.android.bakingapp.loaders.RecipeAsyncLoader;
 import com.projects.android.bakingapp.loaders.UrlLoadingStrategy;
 import com.projects.android.bakingapp.utils.HelperFunctions;
 import com.projects.android.bakingapp.utils.JSONGetter;
@@ -31,12 +31,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements RecepieAdapter.RecepieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Recepie[]>{
+public class MainActivity extends AppCompatActivity implements RecipeAdapter.RecipeAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Recipe[]>{
 
     private final int RECEPIE_LOADER_ID = 1;
     private ProgressBar mLoadingIndicator;
-    private RecepieAdapter mAdapter;
-    private RecyclerView mRecepieRV;
+    private RecipeAdapter mAdapter;
+    private RecyclerView mRecipeRV;
     private Parcelable mRvState;
 
     @Override
@@ -46,21 +46,21 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         Timber.plant(new Timber.DebugTree());
 
-        mAdapter = new RecepieAdapter(this);
+        mAdapter = new RecipeAdapter(this);
         int numOfColumns = calculateNoOfColumns();
         GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
-        mRecepieRV = findViewById(R.id.rv_recepies);
-        mRecepieRV.setAdapter(mAdapter);
-        mRecepieRV.setLayoutManager(layoutManager);
+        mRecipeRV = findViewById(R.id.rv_recipes);
+        mRecipeRV.setAdapter(mAdapter);
+        mRecipeRV.setLayoutManager(layoutManager);
 
         if(savedInstanceState !=null){
-            if(savedInstanceState.containsKey(getString(R.string.rv_recepie_layout_state))){
-                mRvState = savedInstanceState.getParcelable(getString(R.string.rv_recepie_layout_state));
-                mRecepieRV.getLayoutManager().onRestoreInstanceState(mRvState);
+            if(savedInstanceState.containsKey(getString(R.string.rv_recipe_layout_state))){
+                mRvState = savedInstanceState.getParcelable(getString(R.string.rv_recipe_layout_state));
+                mRecipeRV.getLayoutManager().onRestoreInstanceState(mRvState);
             }
         }
 
-        Loader<Recepie[]> loader = getSupportLoaderManager().getLoader(RECEPIE_LOADER_ID);
+        Loader<Recipe[]> loader = getSupportLoaderManager().getLoader(RECEPIE_LOADER_ID);
         if(loader == null){
             getSupportLoaderManager().initLoader(RECEPIE_LOADER_ID, savedInstanceState, MainActivity.this);
         }
@@ -71,43 +71,43 @@ public class MainActivity extends AppCompatActivity implements RecepieAdapter.Re
 
     @NonNull
     @Override
-    public Loader<Recepie[]> onCreateLoader(int id, @Nullable Bundle args) {
-        String url = getString(R.string.url_recepies);
+    public Loader<Recipe[]> onCreateLoader(int id, @Nullable Bundle args) {
+        String url = getString(R.string.url_recipes);
         LoadingStrategy strategy = new UrlLoadingStrategy(url, new JSONGetter());
-        return new RecepieAsyncLoader(args, this, mLoadingIndicator, strategy);
+        return new RecipeAsyncLoader(args, this, mLoadingIndicator, strategy);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Recepie[]> loader, Recepie[] recepies) {
+    public void onLoadFinished(@NonNull Loader<Recipe[]> loader, Recipe[] recipes) {
         mLoadingIndicator.setVisibility(View.INVISIBLE);
-        mAdapter.setRecepies(recepies);
-        if(mRecepieRV!=null){
-            mRecepieRV.getLayoutManager().onRestoreInstanceState(mRvState);
+        mAdapter.setRecipes(recipes);
+        if(mRecipeRV!=null){
+            mRecipeRV.getLayoutManager().onRestoreInstanceState(mRvState);
         }
 
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<Recepie[]> loader) {
+    public void onLoaderReset(@NonNull Loader<Recipe[]> loader) {
 
     }
 
     @Override
-    public void onClick(Recepie recepie) {
-        HelperFunctions.showToast("Clicked on "+recepie.getName(),this);
-        Intent startMovieDetail = new Intent(this, RecepieStepsActivity.class);
+    public void onClick(Recipe recipe) {
+        HelperFunctions.showToast("Clicked on "+recipe.getName(),this);
+        Intent startMovieDetail = new Intent(this, RecipeStepsActivity.class);
 
-        Bundle recepieBundle = new Bundle();
-        recepieBundle.putParcelable(getString(R.string.recepie_parcel),recepie);
-        startMovieDetail.putExtras(recepieBundle);
+        Bundle recipeBundle = new Bundle();
+        recipeBundle.putParcelable(getString(R.string.recipe_parcel),recipe);
+        startMovieDetail.putExtras(recipeBundle);
         startActivity(startMovieDetail);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Parcelable layoutState = mRecepieRV.getLayoutManager().onSaveInstanceState();
-        outState.putParcelable(getString(R.string.rv_recepie_layout_state), layoutState);
+        Parcelable layoutState = mRecipeRV.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(getString(R.string.rv_recipe_layout_state), layoutState);
     }
 
     private int calculateNoOfColumns() {

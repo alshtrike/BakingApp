@@ -1,7 +1,7 @@
 package com.projects.android.bakingapp.loaders;
 
 import com.google.gson.Gson;
-import com.projects.android.bakingapp.data.Recepie;
+import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.utils.JSONGetter;
 
 public class UrlLoadingStrategy implements LoadingStrategy {
@@ -14,11 +14,11 @@ public class UrlLoadingStrategy implements LoadingStrategy {
     }
 
     @Override
-    public Recepie[] load() {
+    public Recipe[] load() {
         String json = mJsonGetter.getJson(mUrl);
         Gson gson = new Gson();
-        Recepie[] recepies = gson.fromJson(json, Recepie[].class);
-        return recepies;
+        Recipe[] recipes = gson.fromJson(json, Recipe[].class);
+        return recipes;
     }
 
 

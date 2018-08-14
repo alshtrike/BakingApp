@@ -1,6 +1,6 @@
 package com.projects.android.bakingapp.loaders;
 
-import com.projects.android.bakingapp.data.Recepie;
+import com.projects.android.bakingapp.data.Recipe;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DatabaseLoadingStrategy implements LoadingStrategy {
     @Override
-    public Recepie[] load() {
+    public Recipe[] load() {
         throw new UnsupportedOperationException();
     }
 }

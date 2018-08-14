@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="loading_indicator_size">42dp</dimen>
-    <dimen name="recepie_item_height">200dp</dimen>
+    <dimen name="recipe_item_height">200dp</dimen>
     <dimen name="cv_horiz_margin">10dp</dimen>
     <dimen name="cv_vert_margin">15dp</dimen>
     <dimen name="rv_top_margin">10dp</dimen>
-    <dimen name="recepie_item_width">400dp</dimen>
+    <dimen name="recipe_item_width">400dp</dimen>
     <dimen name="right_panel_width">350dp</dimen>
 </resources>

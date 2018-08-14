@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recepie_steps_fragment"
-    android:name="com.projects.android.bakingapp.RecepieStepsFragment"
+    android:id="@+id/recipe_steps_fragment"
+    android:name="com.projects.android.bakingapp.RecipeStepsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

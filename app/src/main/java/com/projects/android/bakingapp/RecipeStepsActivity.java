@@ -5,23 +5,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.projects.android.bakingapp.data.Recepie;
+import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.utils.HelperFunctions;
 
 import timber.log.Timber;
 
-public class RecepieStepsActivity extends AppCompatActivity {
+public class RecipeStepsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recepie_steps);
+        setContentView(R.layout.activity_recipe_steps);
 
 
 
         /*Bundle b = getIntent().getExtras();
         if(b!=null){
-            Recepie r = b.getParcelable(getString(R.string.recepie_parcel));
+            Recipe r = b.getParcelable(getString(R.string.recipe_parcel));
             tv.setText(r.getName());
         }*/
 

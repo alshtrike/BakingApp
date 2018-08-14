@@ -6,16 +6,16 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recepie implements Parcelable{
+public class Recipe implements Parcelable{
     private String name;
     private List<Ingredient> ingredients;
     private List<Step> steps;
 
-    public Recepie(){
+    public Recipe(){
 
     }
 
-    public Recepie(Parcel in) {
+    public Recipe(Parcel in) {
         name = in.readString();
         ingredients = new ArrayList<Ingredient>();
         in.readList(ingredients, null);
@@ -23,15 +23,15 @@ public class Recepie implements Parcelable{
         in.readList(steps, null);
     }
 
-    public static final Creator<Recepie> CREATOR = new Creator<Recepie>() {
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
-        public Recepie createFromParcel(Parcel in) {
-            return new Recepie(in);
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
         }
 
         @Override
-        public Recepie[] newArray(int size) {
-            return new Recepie[size];
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
         }
     };
 

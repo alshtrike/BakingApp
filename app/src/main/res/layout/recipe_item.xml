@@ -5,15 +5,15 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv_recepie_item"
+        android:id="@+id/cv_recipe_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/recepie_item_height"
+        android:layout_height="@dimen/recipe_item_height"
         android:layout_marginStart="@dimen/cv_horiz_margin"
         android:layout_marginEnd="@dimen/cv_horiz_margin"
         android:layout_marginBottom="@dimen/cv_vert_margin">
 
         <TextView
-            android:id="@+id/tv_recepie_card_text"
+            android:id="@+id/tv_recipe_card_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>

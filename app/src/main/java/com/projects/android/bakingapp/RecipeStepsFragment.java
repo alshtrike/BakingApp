@@ -8,16 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.projects.android.bakingapp.databinding.FragmentRecepieStepsBinding;
+import com.projects.android.bakingapp.databinding.FragmentRecipeStepsBinding;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecepieStepsFragment extends Fragment {
+public class RecipeStepsFragment extends Fragment {
 
 
-    public RecepieStepsFragment() {
+    public RecipeStepsFragment() {
         // Required empty public constructor
     }
 
@@ -26,7 +26,7 @@ public class RecepieStepsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentRecepieStepsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recepie_steps, container, false);
+        FragmentRecipeStepsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_steps, container, false);
         View view = binding.getRoot();
         binding.testMasterListTv.setText("Test deez nutz");
         return view;

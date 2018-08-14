@@ -7,35 +7,35 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.projects.android.bakingapp.data.Recepie;
+import com.projects.android.bakingapp.data.Recipe;
 
-public class RecepieAsyncLoader extends AsyncTaskLoader<Recepie[]> {
+public class RecipeAsyncLoader extends AsyncTaskLoader<Recipe[]> {
 
     private final Bundle mArgs;
-    private Recepie[] mRecepies;
+    private Recipe[] mRecipes;
     private final ProgressBar mLoadingIndicator;
     private LoadingStrategy mLoadingStrategy;
 
-    public RecepieAsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadingStrategy loadingStrategy) {
+    public RecipeAsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadingStrategy loadingStrategy) {
         super(context);
         this.mArgs = args;
-        mRecepies = null;
+        mRecipes = null;
         mLoadingIndicator = loadingIndicator;
         mLoadingStrategy = loadingStrategy;
     }
 
     @Override
-    public void deliverResult(Recepie[] recepies) {
-        mRecepies = recepies;
-        super.deliverResult(recepies);
+    public void deliverResult(Recipe[] recipes) {
+        mRecipes = recipes;
+        super.deliverResult(recipes);
     }
 
     @Override
     protected void onStartLoading() {
         mLoadingIndicator.setVisibility(View.VISIBLE);
 
-        if (mRecepies != null) {
-            deliverResult(mRecepies);
+        if (mRecipes != null) {
+            deliverResult(mRecipes);
         } else {
             forceLoad();
         }
@@ -43,7 +43,7 @@ public class RecepieAsyncLoader extends AsyncTaskLoader<Recepie[]> {
 
     @Nullable
     @Override
-    public Recepie[] loadInBackground() {
+    public Recipe[] loadInBackground() {
         return mLoadingStrategy.load();
     }
 }
