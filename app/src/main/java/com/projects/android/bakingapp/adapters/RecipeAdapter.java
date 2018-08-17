@@ -36,9 +36,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
     @Override
     public void onBindViewHolder(@NonNull RecipeAdapterViewHolder holder, int position) {
         Recipe recipe = mRecipes[holder.getAdapterPosition()];
-        TextView mRecipeTitle = holder.mRecipeTitle;
+        TextView recipeTitle = holder.mRecipeTitle;
         String recipeName = recipe.getName();
-        mRecipeTitle.setText(recipeName);
+        recipeTitle.setText(recipeName);
     }
 
     @Override

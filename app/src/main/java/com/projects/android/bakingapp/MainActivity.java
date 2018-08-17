@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
     public Loader<Recipe[]> onCreateLoader(int id, @Nullable Bundle args) {
         String url = getString(R.string.url_recipes);
         LoadingStrategy strategy = new UrlLoadingStrategy(url, new JSONGetter());
-        return new RecipeAsyncLoader(args, this, mLoadingIndicator, strategy);
+        return new RecipeAsyncLoader(this, mLoadingIndicator, strategy);
     }
 
     @Override

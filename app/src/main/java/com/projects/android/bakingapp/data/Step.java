@@ -10,11 +10,27 @@ public class Step implements Parcelable {
     private String videoUrl;
     private String thumbnailURL;
 
-    protected Step(Parcel in) {
+    public Step(Parcel in) {
         shortDescription = in.readString();
         description = in.readString();
         videoUrl = in.readString();
         thumbnailURL = in.readString();
+    }
+
+    public String getShortDescription(){
+        return shortDescription;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public String getVideoUrl(){
+        return videoUrl;
+    }
+
+    public String getThumbnailURL(){
+        return thumbnailURL;
     }
 
     public static final Creator<Step> CREATOR = new Creator<Step>() {

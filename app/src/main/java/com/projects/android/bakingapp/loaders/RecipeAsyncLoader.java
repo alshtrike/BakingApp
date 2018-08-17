@@ -11,14 +11,12 @@ import com.projects.android.bakingapp.data.Recipe;
 
 public class RecipeAsyncLoader extends AsyncTaskLoader<Recipe[]> {
 
-    private final Bundle mArgs;
     private Recipe[] mRecipes;
     private final ProgressBar mLoadingIndicator;
     private LoadingStrategy mLoadingStrategy;
 
-    public RecipeAsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadingStrategy loadingStrategy) {
+    public RecipeAsyncLoader(Context context, ProgressBar loadingIndicator, LoadingStrategy loadingStrategy) {
         super(context);
-        this.mArgs = args;
         mRecipes = null;
         mLoadingIndicator = loadingIndicator;
         mLoadingStrategy = loadingStrategy;
