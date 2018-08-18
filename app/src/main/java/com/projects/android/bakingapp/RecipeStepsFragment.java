@@ -38,8 +38,8 @@ public class RecipeStepsFragment extends Fragment {
         String name = recipe.getName();
         FragmentRecipeStepsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_steps, container, false);
         View view = binding.getRoot();
-        List<Ingredient> ingredients = recipe.getIngredients();
-        List<Step> steps = recipe.getSteps();
+        Ingredient[] ingredients = recipe.getIngredients();
+        Step[] steps = recipe.getSteps();
 
         StepsAdapter stepsAdapter = new StepsAdapter();
         stepsAdapter.setSteps(steps);
