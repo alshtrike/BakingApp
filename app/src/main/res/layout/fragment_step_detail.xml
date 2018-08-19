@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- TODO: Update blank fragment layout -->
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/player_height"
+            android:layout_marginStart="@dimen/cv_horiz_margin"
+            android:layout_marginEnd="@dimen/cv_horiz_margin"
+            android:layout_marginBottom="@dimen/cv_vert_margin"
+            android:visibility="gone"/>
+
         <ImageView
-            android:id="@+id/test_detail_iv"
+            android:id="@+id/tiv_step_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/test_detail_tv"
-            android:layout_width="wrap_content"
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_detail_description"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hello_blank_fragment"/>
+            android:layout_marginStart="@dimen/cv_horiz_margin"
+            android:layout_marginEnd="@dimen/cv_horiz_margin"
+            android:layout_marginBottom="@dimen/cv_vert_margin">
+
+            <TextView
+                android:id="@+id/tv_step_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </layout>
 

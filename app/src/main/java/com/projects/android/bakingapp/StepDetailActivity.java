@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.projects.android.bakingapp.data.Ingredient;
 import com.projects.android.bakingapp.data.Recipe;
+import com.projects.android.bakingapp.data.Step;
 
 import timber.log.Timber;
 
@@ -18,7 +19,7 @@ public class StepDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_step_detail);
 
         Bundle b = getIntent().getExtras();
-        String detail = b.getString(getString(R.string.step_details));
+        Step detail = b.getParcelable(getString(R.string.step_details));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         StepDetailFragment detailFragment = new StepDetailFragment();

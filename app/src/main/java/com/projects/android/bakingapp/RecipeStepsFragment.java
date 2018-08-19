@@ -25,10 +25,12 @@ import com.projects.android.bakingapp.utils.HelperFunctions;
 public class RecipeStepsFragment extends Fragment implements StepsAdapter.StepsAdapterOnClickHandler{
 
     private Step[] mSteps;
+    private Ingredient[] mIngredients;
     OnStepClickListener mListener;
 
     public interface OnStepClickListener{
-        void onStepClicked(String detail);
+        void onStepClicked(Step detail);
+        void onIngredientsClicked(Ingredient[] ingredients);
     }
 
     public RecipeStepsFragment() {
@@ -60,6 +62,7 @@ public class RecipeStepsFragment extends Fragment implements StepsAdapter.StepsA
         FragmentRecipeStepsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_steps, container, false);
         View view = binding.getRoot();
         mSteps = recipe.getSteps();
+        mIngredients = recipe.getIngredients();
 
         String[] stepDescripitons = HelperFunctions.makeStepDescriptionsStringArray(mSteps, getString(R.string.tv_ingredients));
         StepsAdapter stepsAdapter = new StepsAdapter(this);
@@ -75,15 +78,14 @@ public class RecipeStepsFragment extends Fragment implements StepsAdapter.StepsA
     @Override
     public void onClick(int adapterPosition) {
 
-        String detail;
         if(adapterPosition == 0){
-            detail = "ingredients";
+            mListener.onIngredientsClicked(mIngredients);
         }
         else{
             Step currentStep = mSteps[adapterPosition-1];
-            detail= currentStep.getDescription();
+            mListener.onStepClicked(currentStep);
         }
 
-        mListener.onStepClicked(detail);
+
     }
 }
