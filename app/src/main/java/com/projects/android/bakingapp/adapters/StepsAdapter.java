@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.projects.android.bakingapp.R;
-import com.projects.android.bakingapp.data.Step;
 
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapterViewHolder>{
 
-    private Step[] mSteps;
+    private String[] mData;
+    private final StepsAdapterOnClickHandler mClickHandler;
+
+    public StepsAdapter(StepsAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+    }
 
     @NonNull
     @Override
@@ -26,29 +30,40 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsAdapter
 
     @Override
     public void onBindViewHolder(@NonNull StepsAdapterViewHolder holder, int position) {
-        Step step = mSteps[holder.getAdapterPosition()];
+        String title = mData[holder.getAdapterPosition()];
         TextView stepTitle = holder.mStepTitle;
-        String recipeName = step.getShortDescription();
-        stepTitle.setText(recipeName);
+        stepTitle.setText(title);
     }
 
     @Override
     public int getItemCount() {
-        return mSteps == null ? 0 : mSteps.length;
+        return mData == null ? 0 : mData.length;
     }
 
-    public void setSteps(Step[] steps){
-        mSteps = steps;
+    public void setSteps(String[] steps){
+        mData = steps;
         notifyDataSetChanged();
     }
-    protected class StepsAdapterViewHolder extends RecyclerView.ViewHolder{
+
+    protected class StepsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         final TextView mStepTitle;
 
         public StepsAdapterViewHolder(View view) {
             super(view);
             mStepTitle = view.findViewById(R.id.tv_steps_item);
+            view.setOnClickListener(this);
 
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            mClickHandler.onClick(position);
+        }
+    }
+
+    public interface StepsAdapterOnClickHandler{
+        void onClick(int adapterPosition);
     }
 }

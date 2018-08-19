@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.projects.android.bakingapp.data.Ingredient;
+import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.databinding.FragmentStepDetailBinding;
 
 
@@ -15,7 +17,7 @@ import com.projects.android.bakingapp.databinding.FragmentStepDetailBinding;
  * A simple {@link Fragment} subclass.
  */
 public class StepDetailFragment extends Fragment {
-
+    private String mDetail;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -28,8 +30,12 @@ public class StepDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
         View root = binding.getRoot();
-        binding.testDetailTv.setText("bagioehaiogebagh;");
+        binding.testDetailTv.setText(mDetail);
         return root;
+    }
+
+    public void setDetail(String detail){
+        mDetail = detail;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.projects.android.bakingapp;
 
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,17 +16,37 @@ import com.projects.android.bakingapp.data.Ingredient;
 import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.data.Step;
 import com.projects.android.bakingapp.databinding.FragmentRecipeStepsBinding;
-
-import java.util.List;
+import com.projects.android.bakingapp.utils.HelperFunctions;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeStepsFragment extends Fragment {
+public class RecipeStepsFragment extends Fragment implements StepsAdapter.StepsAdapterOnClickHandler{
+
+    private Step[] mSteps;
+    OnStepClickListener mListener;
+
+    public interface OnStepClickListener{
+        void onStepClicked(String detail);
+    }
 
     public RecipeStepsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            mListener = (OnStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepClickListener");
+        }
     }
 
     @Override
@@ -38,11 +59,11 @@ public class RecipeStepsFragment extends Fragment {
         String name = recipe.getName();
         FragmentRecipeStepsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_steps, container, false);
         View view = binding.getRoot();
-        Ingredient[] ingredients = recipe.getIngredients();
-        Step[] steps = recipe.getSteps();
+        mSteps = recipe.getSteps();
 
-        StepsAdapter stepsAdapter = new StepsAdapter();
-        stepsAdapter.setSteps(steps);
+        String[] stepDescripitons = HelperFunctions.makeStepDescriptionsStringArray(mSteps, getString(R.string.tv_ingredients));
+        StepsAdapter stepsAdapter = new StepsAdapter(this);
+        stepsAdapter.setSteps(stepDescripitons);
         RecyclerView stepsRv = binding.rvSteps;
         stepsRv.setAdapter(stepsAdapter);
         stepsRv.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -51,4 +72,18 @@ public class RecipeStepsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onClick(int adapterPosition) {
+
+        String detail;
+        if(adapterPosition == 0){
+            detail = "ingredients";
+        }
+        else{
+            Step currentStep = mSteps[adapterPosition-1];
+            detail= currentStep.getDescription();
+        }
+
+        mListener.onStepClicked(detail);
+    }
 }

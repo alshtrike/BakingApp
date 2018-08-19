@@ -94,13 +94,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
     @Override
     public void onClick(Recipe recipe) {
-        HelperFunctions.showToast("Clicked on "+recipe.getName(),this);
-        Intent startMovieDetail = new Intent(this, RecipeStepsActivity.class);
-
+        Intent startStepsActivity = new Intent(this, RecipeStepsActivity.class);
         Bundle recipeBundle = new Bundle();
         recipeBundle.putParcelable(getString(R.string.recipe_parcel),recipe);
-        startMovieDetail.putExtras(recipeBundle);
-        startActivity(startMovieDetail);
+        startStepsActivity.putExtras(recipeBundle);
+        startActivity(startStepsActivity);
     }
 
     @Override
