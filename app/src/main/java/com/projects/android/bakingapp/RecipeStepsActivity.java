@@ -22,7 +22,6 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
         super.onCreate(savedInstanceState);
         Timber.plant(new Timber.DebugTree());
         setContentView(R.layout.activity_recipe_steps);
-
     }
 
     @Override

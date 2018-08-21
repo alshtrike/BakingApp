@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/steps_detail_fragment"
     android:name="com.projects.android.bakingapp.StepDetailFragment"

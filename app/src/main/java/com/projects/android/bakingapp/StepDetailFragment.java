@@ -5,6 +5,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,15 +41,12 @@ public class StepDetailFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        releasePlayer();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if(savedInstanceState!=null){
+            mDetail = savedInstanceState.getParcelable(getString(R.string.step_details));
+        }
         FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
         View root = binding.getRoot();
         if(mDetail !=null){
@@ -85,12 +83,16 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
-    private void releasePlayer() {
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(getString(R.string.step_details), mDetail);
+    }
+/* private void releasePlayer() {
         if(mExoPlayer!=null){
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
         }
-    }
+    }*/
 
 }
