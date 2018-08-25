@@ -9,4 +9,5 @@
     <dimen name="right_panel_width">350dp</dimen>
     <dimen name="recipe_step_height">50dp</dimen>
     <dimen name="player_height">200dp</dimen>
+    <dimen name="thumbnail_height">200dp</dimen>
 </resources>

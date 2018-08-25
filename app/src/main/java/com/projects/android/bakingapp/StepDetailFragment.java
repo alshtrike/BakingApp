@@ -35,35 +35,40 @@ public class StepDetailFragment extends Fragment {
     private Step mDetail;
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
+    private long mPosition = 0;
 
     public StepDetailFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        if(savedInstanceState!=null){
-            mDetail = savedInstanceState.getParcelable(getString(R.string.step_details));
-        }
-        FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
-        View root = binding.getRoot();
-        if(mDetail !=null){
-            mPlayerView = binding.playerView;
-            TextView descriptionTextView = binding.tvStepDetail;
-            mPlayerView.setVisibility(View.VISIBLE);
-            descriptionTextView.setVisibility(View.VISIBLE);
-            descriptionTextView.setText(mDetail.getDescription());
-            Uri uri = Uri.parse(mDetail.getVideoURL());
-            initializePlayer(uri);
-        }
-
-        return root;
-    }
-
     public void setDetail(Step detail){
         mDetail = detail;
+    }
+
+    private boolean validVideoUrl(String url){
+        return url!=null && !url.isEmpty();
+    }
+
+    private void displayVideoPlayer(FragmentStepDetailBinding binding, String url){
+        Uri uri = Uri.parse(url);
+        mPlayerView = binding.playerView;
+        mPlayerView.setVisibility(View.VISIBLE);
+        initializePlayer(uri);
+    }
+
+    private void displayVideoIfUrlExists(FragmentStepDetailBinding binding) {
+
+        if(validVideoUrl(mDetail.getVideoURL())){
+            displayVideoPlayer(binding, mDetail.getVideoURL());
+        }else if(validVideoUrl(mDetail.getThumbnailURL())){
+            displayVideoPlayer(binding, mDetail.getThumbnailURL());
+        }
+    }
+
+    private void displayDescription(FragmentStepDetailBinding binding) {
+        TextView descriptionTextView = binding.tvStepDetail;
+        descriptionTextView.setVisibility(View.VISIBLE);
+        descriptionTextView.setText(mDetail.getDescription());
     }
 
     private void initializePlayer(Uri mediaUri) {
@@ -75,24 +80,55 @@ public class StepDetailFragment extends Fragment {
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
             // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(context, "ClassicalMusicQuiz");
+            String userAgent = Util.getUserAgent(context, getString(R.string.app_name));
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     context, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.seekTo(mPosition);
         }
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(getString(R.string.step_details), mDetail);
-    }
-/* private void releasePlayer() {
+    private void releasePlayer() {
         if(mExoPlayer!=null){
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
         }
-    }*/
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        if(savedInstanceState!=null){
+            mDetail = savedInstanceState.getParcelable(getString(R.string.step_details));
+            mPosition = savedInstanceState.getLong(getString(R.string.video_position));
+        }
+        FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
+        View root = binding.getRoot();
+        if(mDetail !=null){
+            displayDescription(binding);
+            displayVideoIfUrlExists(binding);
+        }
+
+        return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(getString(R.string.step_details), mDetail);
+        long position = 0;
+        if(mExoPlayer!=null){
+            position= mExoPlayer.getCurrentPosition();
+        }
+        outState.putLong(getString(R.string.video_position), position);
+    }
 
 }

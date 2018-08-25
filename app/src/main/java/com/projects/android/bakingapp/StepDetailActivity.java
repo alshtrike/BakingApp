@@ -21,11 +21,21 @@ public class StepDetailActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         Step detail = b.getParcelable(getString(R.string.step_details));
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        StepDetailFragment detailFragment = new StepDetailFragment();
-        detailFragment.setDetail(detail);
-        fragmentManager.beginTransaction()
-                .replace(R.id.steps_detail_fragment, detailFragment)
-                .commit();
+        if(savedInstanceState ==null){
+            //no need to replace again when we rotate
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            StepDetailFragment detailFragment = new StepDetailFragment();
+            detailFragment.setDetail(detail);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.steps_detail_fragment, detailFragment)
+                    .commit();
+        }
+        //TODO make video full screen when mobile is horizontal
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(getString(R.string.is_rotation), true);
+        super.onSaveInstanceState(outState);
     }
 }

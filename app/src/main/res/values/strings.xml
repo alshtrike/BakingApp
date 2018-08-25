@@ -5,4 +5,6 @@
     <string name="recipe_parcel">recipeParcel</string>
     <string name="tv_ingredients">Recipe Ingredients</string>
     <string name="step_details">stepDetails</string>
+    <string name="video_position">videoPosition</string>
+    <string name="is_rotation">screenRotation</string>
 </resources>
