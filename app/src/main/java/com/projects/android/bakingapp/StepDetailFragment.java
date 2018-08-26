@@ -2,14 +2,17 @@ package com.projects.android.bakingapp;
 
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -36,6 +39,7 @@ public class StepDetailFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private long mPosition = 0;
+    private boolean mIsPhone = true;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -45,6 +49,10 @@ public class StepDetailFragment extends Fragment {
         mDetail = detail;
     }
 
+    public void setIsPhone(boolean isPhone){
+        mIsPhone = isPhone;
+    }
+
     private boolean validVideoUrl(String url){
         return url!=null && !url.isEmpty();
     }
@@ -52,8 +60,30 @@ public class StepDetailFragment extends Fragment {
     private void displayVideoPlayer(FragmentStepDetailBinding binding, String url){
         Uri uri = Uri.parse(url);
         mPlayerView = binding.playerView;
+        if(videoShouldBeFullScreen()){
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
+            params.height = getHeightForLandscapeMode();
+            mPlayerView.setLayoutParams(params);
+        }
         mPlayerView.setVisibility(View.VISIBLE);
         initializePlayer(uri);
+    }
+
+    private int getHeightForLandscapeMode() {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        return height < width ? height : width;
+    }
+
+    private boolean videoShouldBeFullScreen() {
+        return mIsPhone && isInLandscapeMode();
+    }
+
+    private boolean isInLandscapeMode() {
+        int orientation = getResources().getConfiguration().orientation;
+        return orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     private void displayVideoIfUrlExists(FragmentStepDetailBinding binding) {
@@ -104,6 +134,7 @@ public class StepDetailFragment extends Fragment {
         if(savedInstanceState!=null){
             mDetail = savedInstanceState.getParcelable(getString(R.string.step_details));
             mPosition = savedInstanceState.getLong(getString(R.string.video_position));
+            mIsPhone = savedInstanceState.getBoolean(getString(R.string.is_phone));
         }
         FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
         View root = binding.getRoot();
@@ -124,6 +155,7 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(getString(R.string.step_details), mDetail);
+        outState.putBoolean(getString(R.string.is_phone), mIsPhone);
         long position = 0;
         if(mExoPlayer!=null){
             position= mExoPlayer.getCurrentPosition();

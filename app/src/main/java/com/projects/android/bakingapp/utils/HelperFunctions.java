@@ -15,7 +15,7 @@ public class HelperFunctions {
     public static String[] makeStepDescriptionsStringArray(Step[] steps, String firstItem){
         String[] stepDescriptions = new String[steps.length+1];
         stepDescriptions[0]= firstItem;
-        for(int i =0 ; i< steps.length; i++){
+        for(int i = 0; i< steps.length; i++){
             stepDescriptions[i+1] = steps[i].getShortDescription();
         }
         return stepDescriptions;

@@ -30,6 +30,7 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
             FragmentManager fragmentManager = getSupportFragmentManager();
             StepDetailFragment detailFragment = new StepDetailFragment();
             detailFragment.setDetail(detail);
+            detailFragment.setIsPhone(false);
             fragmentManager.beginTransaction()
                     .replace(R.id.steps_detail_fragment, detailFragment)
                     .commit();

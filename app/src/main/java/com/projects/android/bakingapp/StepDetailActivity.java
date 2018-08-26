@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.projects.android.bakingapp.data.Ingredient;
 import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.data.Step;
+import com.projects.android.bakingapp.databinding.FragmentStepDetailBinding;
 
 import timber.log.Timber;
 
@@ -26,6 +27,7 @@ public class StepDetailActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             StepDetailFragment detailFragment = new StepDetailFragment();
             detailFragment.setDetail(detail);
+            detailFragment.setIsPhone(true);
             fragmentManager.beginTransaction()
                     .replace(R.id.steps_detail_fragment, detailFragment)
                     .commit();
