@@ -28,7 +28,8 @@
         <activity
             android:name=".StepDetailActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".RecipeStepsActivity" />
+            android:parentActivityName=".RecipeStepsActivity"
+            android:label="@string/step_detail_name"/>
 
         <receiver android:name=".IngredientsWidgetProvider">
             <intent-filter>

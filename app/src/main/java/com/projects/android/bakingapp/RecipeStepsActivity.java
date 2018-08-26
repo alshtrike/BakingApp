@@ -21,6 +21,9 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Timber.plant(new Timber.DebugTree());
+        Bundle b = getIntent().getExtras();
+        Recipe recipe = b.getParcelable(getString(R.string.recipe_parcel));
+        setTitle(recipe.getName());
         setContentView(R.layout.activity_recipe_steps);
     }
 
