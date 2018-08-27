@@ -177,6 +177,7 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, recipeNames);
         mSelectRecipe.setAdapter(adapter);
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     @Override
