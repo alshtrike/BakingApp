@@ -4,9 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
-import android.widget.TextView;
-
-import com.projects.android.bakingapp.data.Ingredient;
 
 import java.util.Set;
 

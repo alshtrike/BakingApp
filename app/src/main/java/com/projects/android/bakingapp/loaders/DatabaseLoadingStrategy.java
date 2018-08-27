@@ -2,8 +2,6 @@ package com.projects.android.bakingapp.loaders;
 
 import com.projects.android.bakingapp.data.Recipe;
 
-import java.util.List;
-
 /**
  * Created by alshtray on 8/11/18.
  */

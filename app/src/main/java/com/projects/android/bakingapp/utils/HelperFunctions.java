@@ -3,7 +3,6 @@ package com.projects.android.bakingapp.utils;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.projects.android.bakingapp.data.Ingredient;
 import com.projects.android.bakingapp.data.Step;
 
 public class HelperFunctions {

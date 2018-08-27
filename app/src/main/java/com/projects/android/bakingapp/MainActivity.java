@@ -1,33 +1,25 @@
 package com.projects.android.bakingapp;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.projects.android.bakingapp.adapters.RecipeAdapter;
 import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.loaders.LoadingStrategy;
 import com.projects.android.bakingapp.loaders.RecipeAsyncLoader;
 import com.projects.android.bakingapp.loaders.UrlLoadingStrategy;
-import com.projects.android.bakingapp.utils.HelperFunctions;
 import com.projects.android.bakingapp.utils.JSONGetter;
-
-import java.util.List;
 
 import timber.log.Timber;
 
