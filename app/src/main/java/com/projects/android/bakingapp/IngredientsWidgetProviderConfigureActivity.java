@@ -73,7 +73,7 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
 
         String[] ingredientNames = new String[ingredients.length];
         for(int i = 0; i<ingredients.length; i++){
-            ingredientNames[i] = ingredients[i].getIngredient();
+            ingredientNames[i] = ""+ingredients[i].getQuantity()+" "+ ingredients[i].getMeasure()+" "+ingredients[i].getIngredient();
         }
         return new HashSet<>(Arrays.asList(ingredientNames));
     }
@@ -172,7 +172,7 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
         String[] recipeNames = new String[data.length];
         mRecipes = data;
         for(int i=0; i<data.length; i++){
-            recipeNames[i]=data[i].getName();
+            recipeNames[i]= data[i].getName();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, recipeNames);

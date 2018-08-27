@@ -49,21 +49,20 @@ public class RecipeStepsActivity extends AppCompatActivity implements RecipeStep
 
     @Override
     public void onIngredientsClicked(Ingredient[] ingredients) {
-        //TODO handle this case
         if(findViewById(R.id.detail_linear_layout)!=null){
-            /*FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             StepDetailFragment detailFragment = new StepDetailFragment();
-            detailFragment.setDetail(detail);
+            detailFragment.setIngredients(ingredients);
             fragmentManager.beginTransaction()
                     .replace(R.id.steps_detail_fragment, detailFragment)
-                    .commit();*/
+                    .commit();
         }
         else{
-            /*Intent startDetailActivity = new Intent(this, StepDetailActivity.class);
+            Intent startDetailActivity = new Intent(this, StepDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelable(getString(R.string.step_details),detail);
+            bundle.putParcelableArray(getString(R.string.ingredients_list),ingredients);
             startDetailActivity.putExtras(bundle);
-            startActivity(startDetailActivity);*/
+            startActivity(startDetailActivity);
         }
     }
 

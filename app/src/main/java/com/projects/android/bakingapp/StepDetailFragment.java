@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -27,6 +28,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.projects.android.bakingapp.data.Ingredient;
 import com.projects.android.bakingapp.data.Step;
 import com.projects.android.bakingapp.databinding.FragmentStepDetailBinding;
 
@@ -40,6 +42,7 @@ public class StepDetailFragment extends Fragment {
     private SimpleExoPlayerView mPlayerView;
     private long mPosition = 0;
     private boolean mIsPhone = true;
+    private Ingredient[] mIngredients;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -47,6 +50,10 @@ public class StepDetailFragment extends Fragment {
 
     public void setDetail(Step detail){
         mDetail = detail;
+    }
+
+    public void setIngredients(Ingredient[] ingredients){
+        mIngredients = ingredients;
     }
 
     public void setIsPhone(boolean isPhone){
@@ -135,6 +142,11 @@ public class StepDetailFragment extends Fragment {
             mDetail = savedInstanceState.getParcelable(getString(R.string.step_details));
             mPosition = savedInstanceState.getLong(getString(R.string.video_position));
             mIsPhone = savedInstanceState.getBoolean(getString(R.string.is_phone));
+            Parcelable[] parcel = savedInstanceState.getParcelableArray(getString(R.string.ingredients_list));
+            if(parcel!=null){
+                mIngredients = new Ingredient[parcel.length];
+                System.arraycopy(parcel, 0, mIngredients, 0, parcel.length);
+            }
         }
         FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
         View root = binding.getRoot();
@@ -143,7 +155,20 @@ public class StepDetailFragment extends Fragment {
             displayVideoIfUrlExists(binding);
         }
 
+        if(mIngredients!=null){
+            displayIngredients(binding);
+        }
+
         return root;
+    }
+
+    private void displayIngredients(FragmentStepDetailBinding binding) {
+        binding.tvIngredientsList.setVisibility(View.VISIBLE);
+        String ingredients = "";
+        for(Ingredient i : mIngredients){
+            ingredients+= i.getQuantity()+" "+i.getMeasure()+" "+i.getIngredient()+"\n";
+        }
+        binding.tvIngredientsList.setText(ingredients);
     }
 
     @Override
@@ -156,6 +181,7 @@ public class StepDetailFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(getString(R.string.step_details), mDetail);
         outState.putBoolean(getString(R.string.is_phone), mIsPhone);
+        outState.putParcelableArray(getString(R.string.ingredients_list),mIngredients);
         long position = 0;
         if(mExoPlayer!=null){
             position= mExoPlayer.getCurrentPosition();

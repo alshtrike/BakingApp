@@ -1,5 +1,6 @@
 package com.projects.android.bakingapp;
 
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,12 @@ public class StepDetailActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         Step detail = b.getParcelable(getString(R.string.step_details));
+        Parcelable[] parcel = b.getParcelableArray(getString(R.string.ingredients_list));
+        Ingredient[] ingredients=null;
+        if(parcel!=null){
+            ingredients = new Ingredient[parcel.length];
+            System.arraycopy(parcel, 0, ingredients, 0, parcel.length);
+        }
 
         if(savedInstanceState ==null){
             //no need to replace again when we rotate
@@ -28,11 +35,11 @@ public class StepDetailActivity extends AppCompatActivity {
             StepDetailFragment detailFragment = new StepDetailFragment();
             detailFragment.setDetail(detail);
             detailFragment.setIsPhone(true);
+            detailFragment.setIngredients(ingredients);
             fragmentManager.beginTransaction()
                     .replace(R.id.steps_detail_fragment, detailFragment)
                     .commit();
         }
-        //TODO make video full screen when mobile is horizontal
     }
 
     @Override
