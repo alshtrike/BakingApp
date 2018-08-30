@@ -43,6 +43,7 @@ public class StepDetailFragment extends Fragment {
     private long mPosition = 0;
     private boolean mIsPhone = true;
     private Ingredient[] mIngredients;
+    private boolean mIsPlaying = false;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -123,6 +124,7 @@ public class StepDetailFragment extends Fragment {
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
             mExoPlayer.seekTo(mPosition);
+            mExoPlayer.setPlayWhenReady(mIsPlaying);
         }
     }
 
@@ -134,6 +136,15 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
+    private void displayIngredients(FragmentStepDetailBinding binding) {
+        binding.tvIngredientsList.setVisibility(View.VISIBLE);
+        String ingredients = "";
+        for(Ingredient i : mIngredients){
+            ingredients += i.getQuantity()+" "+i.getMeasure()+" "+i.getIngredient()+"\n";
+        }
+        binding.tvIngredientsList.setText(ingredients);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -142,6 +153,7 @@ public class StepDetailFragment extends Fragment {
             mDetail = savedInstanceState.getParcelable(getString(R.string.step_details));
             mPosition = savedInstanceState.getLong(getString(R.string.video_position));
             mIsPhone = savedInstanceState.getBoolean(getString(R.string.is_phone));
+            mIsPlaying = savedInstanceState.getBoolean(getString(R.string.is_playing));
             Parcelable[] parcel = savedInstanceState.getParcelableArray(getString(R.string.ingredients_list));
             if(parcel!=null){
                 mIngredients = new Ingredient[parcel.length];
@@ -162,15 +174,6 @@ public class StepDetailFragment extends Fragment {
         return root;
     }
 
-    private void displayIngredients(FragmentStepDetailBinding binding) {
-        binding.tvIngredientsList.setVisibility(View.VISIBLE);
-        String ingredients = "";
-        for(Ingredient i : mIngredients){
-            ingredients+= i.getQuantity()+" "+i.getMeasure()+" "+i.getIngredient()+"\n";
-        }
-        binding.tvIngredientsList.setText(ingredients);
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -178,9 +181,20 @@ public class StepDetailFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(getString(R.string.step_details), mDetail);
         outState.putBoolean(getString(R.string.is_phone), mIsPhone);
+        outState.putBoolean(getString(R.string.is_playing), mExoPlayer.getPlayWhenReady());
         outState.putParcelableArray(getString(R.string.ingredients_list),mIngredients);
         long position = 0;
         if(mExoPlayer!=null){
