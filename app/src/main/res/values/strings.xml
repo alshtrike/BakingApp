@@ -14,4 +14,7 @@
     <string name="step_detail_name">Details</string>
     <string name="ingredients_list">listOfIngredients</string>
     <string name="is_playing">isVideoPlaying</string>
+    <string name="prefsName">com.projects.android.bakingapp.IngredientsWidgetProvider</string>
+    <string name="prefsPrefixIngredients">appwidgetIngredients_</string>
+    <string name="prefsPrefixName">appwidget_</string>
 </resources>

@@ -3,32 +3,25 @@ package com.projects.android.bakingapp;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
-
-import java.util.Set;
 
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link IngredientsWidgetProviderConfigureActivity IngredientsWidgetProviderConfigureActivity}
  */
-public class IngredientsWidgetProvider extends AppWidgetProvider {
+public class IngredientsWidgetProvider extends AppWidgetProvider{
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        String ingredientName = IngredientsWidgetProviderConfigureActivity.loadTitlePref(context, appWidgetId);
-        Set<String> ingredients = IngredientsWidgetProviderConfigureActivity.loadIngredientPref(context, appWidgetId);
+        String ingredientName = IngredientsWidgetProviderConfigureActivity.loadTitlePref(context);
+        String ingredients = IngredientsWidgetProviderConfigureActivity.loadIngredientPref(context);
         // Construct the RemoteViews object
-        String ingredientsList = "";
-        if(ingredients!=null){
-            for(String s : ingredients){
-                ingredientsList+=s+="\n";
-            }
-        }
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_provider);
         views.setTextViewText(R.id.appwidget_text, ingredientName);
-        views.setTextViewText(R.id.ingredients_list, ingredientsList);
+        views.setTextViewText(R.id.ingredients_list, ingredients);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

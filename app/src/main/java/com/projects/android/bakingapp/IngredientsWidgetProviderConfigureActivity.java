@@ -20,11 +20,8 @@ import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.loaders.LoadingStrategy;
 import com.projects.android.bakingapp.loaders.RecipeAsyncLoader;
 import com.projects.android.bakingapp.loaders.UrlLoadingStrategy;
+import com.projects.android.bakingapp.utils.HelperFunctions;
 import com.projects.android.bakingapp.utils.JSONGetter;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The configuration screen for the {@link IngredientsWidgetProvider IngredientsWidgetProvider} AppWidget.
@@ -35,7 +32,7 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
     private static final String PREF_PREFIX_KEY = "appwidget_";
     private static final String PREF_PREFIX_INGREDIENTS_KEY = "appwidgetIngredients_";
     private final int RECEPIE_LOADER_ID = 1;
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Spinner mSelectRecipe;
     private ProgressBar mLoadingIndicator;
     private Recipe[] mRecipes;
@@ -46,9 +43,9 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
 
             // When the button is clicked, store the string locally
             String widgetText = mSelectRecipe.getSelectedItem().toString();
-            Set<String> ingredients = findRecepieIngredients(widgetText);
-            saveTitlePref(context, mAppWidgetId, widgetText);
-            saveIngredientPref(context, mAppWidgetId, ingredients);
+            String ingredients = findRecepieIngredients(widgetText);
+            saveTitlePref(context, widgetText);
+            saveIngredientPref(context, ingredients);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -62,7 +59,7 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
         }
     };
 
-    private Set<String> findRecepieIngredients(String recipeName) {
+    private String findRecepieIngredients(String recipeName) {
         Ingredient[] ingredients = null;
         for(Recipe r : mRecipes){
             if(r.getName().equals(recipeName)){
@@ -71,11 +68,7 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
             }
         }
 
-        String[] ingredientNames = new String[ingredients.length];
-        for(int i = 0; i<ingredients.length; i++){
-            ingredientNames[i] = ""+ingredients[i].getQuantity()+" "+ ingredients[i].getMeasure()+" "+ingredients[i].getIngredient();
-        }
-        return new HashSet<>(Arrays.asList(ingredientNames));
+        return HelperFunctions.ingredientArrayToString(ingredients);
     }
 
     public IngredientsWidgetProviderConfigureActivity() {
@@ -83,22 +76,22 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
     }
 
     // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
+    static void saveTitlePref(Context context, String text) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
+        prefs.putString(PREF_PREFIX_KEY, text);
         prefs.apply();
     }
 
-    static void saveIngredientPref(Context context, int appWidgetId, Set<String> ingredients) {
+    static void saveIngredientPref(Context context, String ingredients) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putStringSet(PREF_PREFIX_INGREDIENTS_KEY + appWidgetId, ingredients );
+        prefs.putString(PREF_PREFIX_INGREDIENTS_KEY, ingredients );
         prefs.apply();
     }
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
+    static String loadTitlePref(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
+        String titleValue = prefs.getString(PREF_PREFIX_KEY, null);
         if (titleValue != null) {
             return titleValue;
         } else {
@@ -106,15 +99,11 @@ public class IngredientsWidgetProviderConfigureActivity extends AppCompatActivit
         }
     }
 
-    static Set<String> loadIngredientPref(Context context, int appWidgetId) {
+    static String loadIngredientPref(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        Set<String> ingredientsSet = new HashSet<>();
-        ingredientsSet = prefs.getStringSet(PREF_PREFIX_INGREDIENTS_KEY + appWidgetId, ingredientsSet);
-        if (ingredientsSet != null) {
-            return ingredientsSet;
-        } else {
-            return null;
-        }
+        String ingredients = "";
+        ingredients = prefs.getString(PREF_PREFIX_INGREDIENTS_KEY, ingredients);
+        return ingredients;
     }
 
     static void deleteTitlePref(Context context, int appWidgetId) {

@@ -1,6 +1,9 @@
 package com.projects.android.bakingapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -19,6 +22,7 @@ import com.projects.android.bakingapp.data.Recipe;
 import com.projects.android.bakingapp.loaders.LoadingStrategy;
 import com.projects.android.bakingapp.loaders.RecipeAsyncLoader;
 import com.projects.android.bakingapp.loaders.UrlLoadingStrategy;
+import com.projects.android.bakingapp.utils.HelperFunctions;
 import com.projects.android.bakingapp.utils.JSONGetter;
 
 import timber.log.Timber;
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
     public void onClick(Recipe recipe) {
         Intent startStepsActivity = new Intent(this, RecipeStepsActivity.class);
         Bundle recipeBundle = new Bundle();
+        updateFavoriteRecipeWidget(recipe);
         recipeBundle.putParcelable(getString(R.string.recipe_parcel),recipe);
         startStepsActivity.putExtras(recipeBundle);
         startActivity(startStepsActivity);
@@ -98,6 +103,23 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         super.onSaveInstanceState(outState);
         Parcelable layoutState = mRecipeRV.getLayoutManager().onSaveInstanceState();
         outState.putParcelable(getString(R.string.rv_recipe_layout_state), layoutState);
+    }
+
+    private void updateFavoriteRecipeWidget(Recipe recipe) {
+        //update preferences
+        String ingredients = "";
+        ingredients= HelperFunctions.ingredientArrayToString(recipe.getIngredients());
+        SharedPreferences.Editor prefs = getSharedPreferences(getString(R.string.prefsName), 0).edit();
+        prefs.putString(getString(R.string.prefsPrefixName), recipe.getName() );
+        prefs.putString(getString(R.string.prefsPrefixIngredients), ingredients );
+        prefs.apply();
+
+        //refresh widget
+        Intent intent = new Intent(this, IngredientsWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), IngredientsWidgetProvider.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
     }
 
     private int calculateNoOfColumns() {

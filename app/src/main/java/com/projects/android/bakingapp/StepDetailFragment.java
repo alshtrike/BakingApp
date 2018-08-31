@@ -44,6 +44,7 @@ public class StepDetailFragment extends Fragment {
     private boolean mIsPhone = true;
     private Ingredient[] mIngredients;
     private boolean mIsPlaying = false;
+    private FragmentStepDetailBinding mBinding;
 
     public StepDetailFragment() {
         // Required empty public constructor
@@ -94,17 +95,17 @@ public class StepDetailFragment extends Fragment {
         return orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    private void displayVideoIfUrlExists(FragmentStepDetailBinding binding) {
+    private void displayVideoIfUrlExists() {
 
         if(validVideoUrl(mDetail.getVideoURL())){
-            displayVideoPlayer(binding, mDetail.getVideoURL());
+            displayVideoPlayer(mBinding, mDetail.getVideoURL());
         }else if(validVideoUrl(mDetail.getThumbnailURL())){
-            displayVideoPlayer(binding, mDetail.getThumbnailURL());
+            displayVideoPlayer(mBinding, mDetail.getThumbnailURL());
         }
     }
 
-    private void displayDescription(FragmentStepDetailBinding binding) {
-        TextView descriptionTextView = binding.tvStepDetail;
+    private void displayDescription() {
+        TextView descriptionTextView = mBinding.tvStepDetail;
         descriptionTextView.setVisibility(View.VISIBLE);
         descriptionTextView.setText(mDetail.getDescription());
     }
@@ -136,13 +137,13 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
-    private void displayIngredients(FragmentStepDetailBinding binding) {
-        binding.tvIngredientsList.setVisibility(View.VISIBLE);
+    private void displayIngredients() {
+        mBinding.tvIngredientsList.setVisibility(View.VISIBLE);
         String ingredients = "";
         for(Ingredient i : mIngredients){
             ingredients += i.getQuantity()+" "+i.getMeasure()+" "+i.getIngredient()+"\n";
         }
-        binding.tvIngredientsList.setText(ingredients);
+        mBinding.tvIngredientsList.setText(ingredients);
     }
 
     @Override
@@ -160,34 +161,51 @@ public class StepDetailFragment extends Fragment {
                 System.arraycopy(parcel, 0, mIngredients, 0, parcel.length);
             }
         }
-        FragmentStepDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
-        View root = binding.getRoot();
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_step_detail, container, false);
+        View root = mBinding.getRoot();
         if(mDetail !=null){
-            displayDescription(binding);
-            displayVideoIfUrlExists(binding);
+            displayDescription();
         }
 
         if(mIngredients!=null){
-            displayIngredients(binding);
+            displayIngredients();
         }
 
         return root;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        releasePlayer();
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if ((Util.SDK_INT <= 23 || mPlayerView==null)) {
+            if(mDetail!=null){
+                displayVideoIfUrlExists();
+            }
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if (Util.SDK_INT > 23 && mDetail!=null) {
+            displayVideoIfUrlExists();
+        }
     }
 
     @Override
