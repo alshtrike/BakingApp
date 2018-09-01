@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.projects.android.bakingapp.data.Ingredient;
 import com.projects.android.bakingapp.data.Step;
 import com.projects.android.bakingapp.databinding.FragmentStepDetailBinding;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -99,8 +101,6 @@ public class StepDetailFragment extends Fragment {
 
         if(validVideoUrl(mDetail.getVideoURL())){
             displayVideoPlayer(mBinding, mDetail.getVideoURL());
-        }else if(validVideoUrl(mDetail.getThumbnailURL())){
-            displayVideoPlayer(mBinding, mDetail.getThumbnailURL());
         }
     }
 
@@ -146,6 +146,28 @@ public class StepDetailFragment extends Fragment {
         mBinding.tvIngredientsList.setText(ingredients);
     }
 
+    private void displayImage(){
+        String thumbnailUrl = mDetail.getThumbnailURL();
+        if(thumbnailUrl!=null && !thumbnailUrl.isEmpty()){
+            ImageView iv = mBinding.ivStepDetail;
+            iv.setVisibility(View.VISIBLE);
+
+            //Image taken from udacity website
+            Picasso.with(getContext())
+                    .load(thumbnailUrl)
+                    .placeholder(R.drawable.image_placeholder_185)
+                    .error(R.drawable.example_appwidget_preview)
+                    .into(iv);
+        }
+        else{
+            //resize text-view to fill parent
+            TextView tv = mBinding.tvStepDetail;
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tv.getLayoutParams();
+            params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            tv.setLayoutParams(params);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -165,6 +187,7 @@ public class StepDetailFragment extends Fragment {
         View root = mBinding.getRoot();
         if(mDetail !=null){
             displayDescription();
+            displayImage();
         }
 
         if(mIngredients!=null){
@@ -212,11 +235,11 @@ public class StepDetailFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(getString(R.string.step_details), mDetail);
         outState.putBoolean(getString(R.string.is_phone), mIsPhone);
-        outState.putBoolean(getString(R.string.is_playing), mExoPlayer.getPlayWhenReady());
         outState.putParcelableArray(getString(R.string.ingredients_list),mIngredients);
         long position = 0;
         if(mExoPlayer!=null){
             position= mExoPlayer.getCurrentPosition();
+            outState.putBoolean(getString(R.string.is_playing), mExoPlayer.getPlayWhenReady());
         }
         outState.putLong(getString(R.string.video_position), position);
     }
